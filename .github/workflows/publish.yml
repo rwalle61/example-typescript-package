@@ -3,6 +3,11 @@ name: Release & Publish
 on:
   workflow_dispatch:
 
+inputs:
+  package-version:
+    description: "Path to test script"
+    required: true
+
 jobs:
   release:
     name: Release
@@ -10,14 +15,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          tag_name: ${{ github.event.inputs.package-version }}
+          release_name: ${{ github.event.inputs.package-version }}
           draft: false
           prerelease: false
 
@@ -25,26 +31,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: Setup .npmrc file to publish to npm
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
-      - name: Install modules
-        run: npm install
-      - name: Build
-        run: npm run build
+
+      - run: npm install
+
+      - run: npm run build
+
       - name: Publish to npm
         run: npm publish --access restricted
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
       - name: Setup .npmrc file to publish to GitHub Packages
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@rwalle61'
+      
       - run: npm run addscope
+      
       - name: Publish to GitHub Packages
         run: npm publish
         env:
