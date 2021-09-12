@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       package-version:
-        description: "Path to test script"
+        description: "Package version in SemVer (X.X.X)"
         required: true
 
 
@@ -43,7 +43,7 @@ jobs:
       - run: npm run build
 
       - name: Publish to npm
-        run: npm publish --access restricted
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       
