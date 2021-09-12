@@ -27,6 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.event.inputs.package-version }}
+          # TODO this sin't exactly the right syntax
           release_name: ${{ github.event.inputs.package-version }} / ${{ steps.today-string.outputs.today }}
           draft: false
           prerelease: false
@@ -44,14 +45,20 @@ jobs:
 
       - run: npm install
 
+      # TODO fix this. Get it working locally?
       - run: npm run lerna:version -- ${{ github.event.inputs.package-version }}
 
       - run: npm run build
 
       - name: Publish to npm
-        run: npm publish --access public
+      # TODO try this
+        run: lerna publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Publish to npm
+      #   run: npm publish --access public
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Setup .npmrc file to publish to GitHub Packages
         uses: actions/setup-node@v1
