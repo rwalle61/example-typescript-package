@@ -27,7 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.event.inputs.package-version }}
-          release_name: ${{ github.event.inputs.package-version }} / {{ steps.today-string.outputs.today }}
+          release_name: ${{ github.event.inputs.package-version }} / ${{ steps.today-string.outputs.today }}
           draft: false
           prerelease: false
 

@@ -5,7 +5,7 @@
   "description": "",
   "main": "dist/cjs/index.js",
   "scripts": {
-    "build": "lerna build",
+    "build": "lerna run build",
     "clean": "node tools/cleanup",
     "package": "npm run build && npm pack",
     "addscope": "node tools/packagejson name @rwalle/example-typescript-package",
