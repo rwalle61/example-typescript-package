@@ -2,11 +2,11 @@ name: Release & Publish
 
 on:
   workflow_dispatch:
+    inputs:
+      package-version:
+        description: "Path to test script"
+        required: true
 
-inputs:
-  package-version:
-    description: "Path to test script"
-    required: true
 
 jobs:
   release:
