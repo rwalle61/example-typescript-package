@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       package-version:
-        description: "Package version in SemVer (X.X.X)"
+        description: 'Package version in SemVer (X.X.X)'
         required: false
         default: 0.3.0
 
@@ -15,11 +15,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
+
       - name: Get today string
         id: today-string
         uses: DanielRNDev/get-today@v1.0.2
-      
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -44,22 +44,24 @@ jobs:
 
       - run: npm install
 
+      - run: npm run lerna:version -- ${{ github.event.inputs.package-version }}
+
       - run: npm run build
 
       - name: Publish to npm
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
+
       - name: Setup .npmrc file to publish to GitHub Packages
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@rwalle61'
-      
+
       - run: npm run addscope
-      
+
       - name: Publish to GitHub Packages
         run: npm publish
         env:

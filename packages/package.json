@@ -1,17 +1,15 @@
 {
-  "private": true,
-  "name": "root",
+  "name": "@rwalle61/example-typescript-package",
   "version": "0.2.1",
   "description": "",
   "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "umd:main": "dist/umd/index.js",
+  "types": "dist/types/index.d.js",
   "scripts": {
-    "build": "lerna build",
-    "clean": "node tools/cleanup",
-    "package": "npm run build && npm pack",
-    "addscope": "node tools/packagejson name @rwalle/example-typescript-package",
-    "lerna:version:preview": "yarn lerna:version --no-git-tag-version",
-    "lerna:version": "lerna version -m \"chore(release): %s\" --conventional-commits --no-changelog",
-    "publish": "lerna publish"
+    "build": "npm run build:cjs",
+    "build:cjs": "node tools/cleanup cjs && tsc -p config/tsconfig.cjs.json",
+    "package": "npm run build && npm pack"
   },
   "publishConfig": {
     "access": "public"
