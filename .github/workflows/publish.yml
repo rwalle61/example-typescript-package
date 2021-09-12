@@ -1,9 +1,7 @@
 name: Release & Publish
 
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch:
 
 jobs:
   release:
@@ -37,7 +35,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Publish to npm
-        run: npm publish --access public
+        run: npm publish --access restricted
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Setup .npmrc file to publish to GitHub Packages
@@ -45,7 +43,7 @@ jobs:
         with:
           node-version: '12.x'
           registry-url: 'https://npm.pkg.github.com'
-          scope: '@tomchen'
+          scope: '@rwalle61'
       - run: npm run addscope
       - name: Publish to GitHub Packages
         run: npm publish
